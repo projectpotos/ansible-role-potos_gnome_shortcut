@@ -1,0 +1,47 @@
+---
+
+- name: "Install Gnome Shell extensions"
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - "gnome-shell-extensions"
+
+- name: "Create extension dir"
+  ansible.builtin.file:
+    path: "/usr/share/gnome-shell/extensions/{{ potos_gnome_shortcuts_extention_uuid }}"
+    state: directory
+
+- name: "Install Extension dynamic"
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "/usr/share/gnome-shell/extensions/{{ potos_gnome_shortcuts_extention_uuid }}/{{ item.dest }}"
+    mode: 0644
+    owner: root
+    group: root
+  loop:
+    - src: "extension/extension.js.j2"
+      dest: "extension.js"
+    - src: "extension/metadata.json.j2"
+      dest: "metadata.json.j2"
+- name: "Copy Extension icon"
+  ansible.builtin.copy:
+    src: "{{ potos_gnome_shortcuts_icon_file }}"
+    dest: "/usr/share/gnome-shell/extensions/{{ potos_gnome_shortcuts_extention_uuid }}/icon.svg"
+    mode: 0644
+    owner: root
+    group: root
+
+- name: "Create dconf directories"
+  ansible.builtin.file:
+    path: "/etc/dconf/db/local.d"
+    state: directory
+
+- name: "Enable dconf"
+  ansible.builtin.template:
+    src: "etc/dconf/db/local.d/00-extensions.j2"
+    dest: "/etc/dconf/db/local.d/00-extensions" 
+    mode: 0644
+    owner: root
+    group: root
+  notify: dconf update 

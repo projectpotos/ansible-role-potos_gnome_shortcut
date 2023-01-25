@@ -1,0 +1,62 @@
+---
+
+argument_specs:
+  main:
+    short_description: Role to use add install Gnome extendion which allows for shortcuts in top bar.
+    options:
+      potos_gnome_shortcuts_extention_uuid:
+        description:
+          - Gnome extention uuid
+        type: str
+        required: false
+        default: "gnomeShortcuts@potos.dev"
+      potos_gnome_shortcuts_extention_name:
+        description:
+          - Gnome extention name
+        type: str
+        required: false
+        default: "Potos Gnome Shortcuts" 
+      potos_gnome_shortcuts_extention_description:
+        description:
+          - Gnome extention description
+        type: str
+        required: false
+        default: "Provides Shortcut Menu for Potos" 
+      potos_gnome_shortcuts_position_index:
+        description:
+          - Index for location where icon should be inserted
+        type: int
+        required: false
+        default: "20" 
+      potos_gnome_shortcuts_position_place:
+        description:
+          - On which part of action bar icon should be inserted
+        type: str
+        required: false
+        default: "right"
+      potos_gnome_shortcuts_icon_file:
+        description:
+          - File to be used as Icon
+        type: str
+        required: false
+        default: "potos.svg"
+      potos_gnome_shortcuts_actions:
+        description:
+          - List of items used to define shortcuts
+        type: list
+        elements: dict
+        required: false
+        default:
+          - type: "command"
+            text: "Hello World!"
+            action:
+              - "/bin/bash"
+              - "-c"
+              - "yad --title 'Hello World!' --text='Hello World!' --width=200 --timeout=5 --timeout-indicator=top"
+          - type: "separator"
+          - type: "command"
+            text: "Goodbye"
+            action:
+              - "/bin/bash"
+              - "-c"
+              - "yad --title 'Goodbye!' --text='Goodbye!' --width=200 --timeout=5 --timeout-indicator=top"

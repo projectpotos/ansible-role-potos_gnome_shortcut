@@ -1,0 +1,23 @@
+---
+
+potos_gnome_shortcuts_extention_uuid: "gnomeShortcuts@potos.dev"
+potos_gnome_shortcuts_extention_name: "Potos Gnome Shortcuts"
+potos_gnome_shortcuts_extention_description: "Provides Shortcut Menu for Potos"
+potos_gnome_shortcuts_position_index: 20
+potos_gnome_shortcuts_position_place: "right"
+potos_gnome_shortcuts_icon_file: "potos.svg"
+
+potos_gnome_shortcuts_actions:
+  - type: "command"
+    text: "Hello World!"
+    action:
+      - "/bin/bash"
+      - "-c"
+      - "yad --title 'Hello World!' --text='Hello World!' --width=200 --timeout=5 --timeout-indicator=top"
+  - type: "separator"
+  - type: "command"
+    text: "Goodbye"
+    action:
+      - "/bin/bash"
+      - "-c"
+      - "yad --title 'Goodbye!' --text='Goodbye!' --width=200 --timeout=5 --timeout-indicator=top"

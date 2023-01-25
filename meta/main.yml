@@ -1,0 +1,21 @@
+
+---
+
+galaxy_info:
+  author: Project Potos
+  description: Role to install a Gnome extendion which allows for shortcuts in top bar.
+  company: Project Potos
+  role_name: potos_gnome_shortcuts
+  namespace: projectpotos
+  license: GPL-3.0-only
+  min_ansible_version: '2.12'
+  platforms:
+    - name: Ubuntu
+      versions:
+        - focal
+        - jammy
+  galaxy_tags:
+    - potos
+    - gnome
+
+dependencies: []
