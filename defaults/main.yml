@@ -6,6 +6,7 @@ potos_gnome_shortcuts_extention_description: "Provides Shortcut Menu for Potos"
 potos_gnome_shortcuts_position_index: 20
 potos_gnome_shortcuts_position_place: "right"
 potos_gnome_shortcuts_icon_file: "potos.svg"
+potos_gnome_shortcuts_dconf_file_location: "/etc/dconf/db/local.d/00-extensions"
 
 potos_gnome_shortcuts_actions:
   - type: "command"

@@ -26,7 +26,7 @@
     - src: "extension/extension.js.j2"
       dest: "extension.js"
     - src: "extension/metadata.json.j2"
-      dest: "metadata.json.j2"
+      dest: "metadata.json"
 - name: "Copy Extension icon"
   ansible.builtin.copy:
     src: "{{ potos_gnome_shortcuts_icon_file }}"
@@ -37,7 +37,7 @@
 
 - name: "Create dconf directories"
   ansible.builtin.file:
-    path: "/etc/dconf/db/local.d"
+    path: "{{ potos_gnome_shortcuts_dconf_file_location | dirname }}"
     state: directory
     mode: 0755
     owner: root
@@ -46,7 +46,7 @@
 - name: "Enable dconf"
   ansible.builtin.template:
     src: "etc/dconf/db/local.d/00-extensions.j2"
-    dest: "/etc/dconf/db/local.d/00-extensions"
+    dest: "{{ potos_gnome_shortcuts_dconf_file_location }}"
     mode: 0644
     owner: root
     group: root

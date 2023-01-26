@@ -2,7 +2,7 @@
 
 argument_specs:
   main:
-    short_description: Role to use add install Gnome extendion which allows for shortcuts in top bar.
+    short_description: Role to use add install Gnome extension which allows for shortcuts in top bar.
     options:
       potos_gnome_shortcuts_extention_uuid:
         description:
@@ -40,6 +40,12 @@ argument_specs:
         type: str
         required: false
         default: "potos.svg"
+      potos_gnome_shortcuts_dconf_file_location:
+        description:
+          - In which file the dconf enabeling should be saved
+        type: str
+        required: false
+        default: "/etc/dconf/db/local.d/00-extensions"
       potos_gnome_shortcuts_actions:
         description:
           - List of items used to define shortcuts

@@ -2,7 +2,7 @@
 
 galaxy_info:
   author: Project Potos
-  description: Role to install a Gnome extendion which allows for shortcuts in top bar.
+  description: Role to install a Gnome extension which allows for shortcuts in top bar.
   company: Project Potos
   role_name: potos_gnome_shortcuts
   namespace: projectpotos
