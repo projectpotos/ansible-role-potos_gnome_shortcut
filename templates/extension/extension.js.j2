@@ -4,7 +4,7 @@
 
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
-const {St, Clutter} = imports.gi;
+const {St, Clutter, GGObject} = imports.gi;
 
 const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
@@ -20,42 +20,79 @@ const positionPlace = "{{ potos_gnome_shortcuts_position_place }}";
 let extension;
 let list = {{ potos_gnome_shortcuts_actions | to_json }};
 
+const Config = imports.misc.config;
+const [major] = Config.PACKAGE_VERSION.split('.');
+const shellVersion = Number.parseInt(major);
 
-const extensionObject = new Lang.Class({
-  Name: "gnomeShortcut.projectpotos",
-  Extends: PanelMenu.Button,
-  _init: function() {
-    let icon;
-    icon = new St.Icon({ width: Main.layoutManager.panelBox.get_height(),
-                         gicon: Gio.icon_new_for_string(`${Me.path}/icon.svg`)});
-    let label = new St.Label({ text: ""});
-    this.parent(0.0, label.text);
-    this.actor.add_actor(icon);
+let extensionObject;
+if (shellVersion < 40) {
+  extensionObject = new Lang.Class({
+    Name: "gnomeShortcut.projectpotos",
+    Extends: PanelMenu.Button,
+    _init: function() {
+      let icon;
+      icon = new St.Icon({ width: Main.layoutManager.panelBox.get_height(),
+                          gicon: Gio.icon_new_for_string(`${Me.path}/icon.svg`)});
+      let label = new St.Label({ text: ""});
+      this.parent(0.0, label.text);
+      this.actor.add_actor(icon);
 
-    let item = null;
-    for (x in list) {
-      if (list[x].type == "command"){
-        item = new PopupMenu.PopupMenuItem(list[x].text);
-        item.connect("activate", Lang.bind(this,
-          (function() {
-            var currentAction = list[x].action;
-            return function(){
-              Util.spawn(currentAction);
-            }
-          })()));
-        this.menu.addMenuItem(item);
+      let item = null;
+      for (x in list) {
+        if (list[x].type == "command"){
+          item = new PopupMenu.PopupMenuItem(list[x].text);
+          item.connect("activate", Lang.bind(this,
+            (function() {
+              var currentAction = list[x].action;
+              return function(){
+                Util.spawn(currentAction);
+              }
+            })()));
+          this.menu.addMenuItem(item);
+        }
+        if (list[x].type == "separator") {
+          this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+        }
       }
-      if (list[x].type == "separator") {
-        this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+
+    },
+    destroy: function() {
+      this.parent();
+    }
+  });
+} else {
+  extensionObject = GObject.registerClass({
+    GTypeName: "gnomeShortcut",
+    }, class gnomeShortcut extends PanelMenu.Button {
+      constructor(){
+        super(0.0, "");
+        let icon;
+        icon = new St.Icon({ width: Main.layoutManager.panelBox.get_height(),
+                            gicon: Gio.icon_new_for_string(`${Me.path}/icon.svg`)});
+        this.add_actor(icon);
+
+        let item = null;
+        for (let x in list) {
+          if (list[x].type == "command"){
+            item = new PopupMenu.PopupMenuItem(list[x].text);
+            item.connect("activate", Lang.bind(this,
+              (function() {
+                var currentAction = list[x].action;
+                return function(){
+                  Util.spawn(currentAction);
+                }
+              })()));
+            this.menu.addMenuItem(item);
+          }
+          if (list[x].type == "separator") {
+            this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+          }
+        }
       }
     }
+  );
 
-  },
-  destroy: function() {
-    this.parent();
-  }
-});
-
+}
 
 function init(){ }
 
