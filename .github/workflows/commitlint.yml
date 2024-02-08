@@ -9,5 +9,5 @@ on:
 jobs:
   commitlint:
     uses: projectpotos/.github/.github/workflows/commit-lint.yml@main
-      with:
-        configFile: projectpotos/.github/configs/commitlint.config.js@main
+    with:
+      configFile: projectpotos/.github/configs/commitlint.config.js@main
